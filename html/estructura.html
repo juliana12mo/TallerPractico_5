@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Calendario de Eventos</title>
+    <link rel="stylesheet" href="../css/estilos.css" />
+    <script src="../js/evento.js"></script>
+    <script src="../js/gestionevento.js"></script>
+    <script src="../js/vista.js"></script>
+    
+  </head>
+  <body>
+    <h1>Calendario de Eventos</h1>
+
+    <div id="contenedor">
+        
+
+        <div id="encabezado"></div>
+
+        <div id="dias">
+
+            <div>Domingo</div>
+            <div>Lunes</div>
+            <div>Martes</div>
+            <div>Miercoles</div>
+            <div>Jueves</div>
+            <div>Viernes</div>
+            <div>Sabado</div>
+
+        </div>
+ 
+        <div id="calendario"></div>
+
+
+
+    </div>
+    
+
+
+    <div id="navigation">
+      <button id="annualView">Vista Anual</button>
+      <button id="monthlyView">Vista Mensual</button>
+      <button id="dailyView">Vista Diaria</button>
+    </div>
+
+
+
+
+    <div id="eventForm">
+      <h2>Agregar / Modificar Evento</h2>
+
+      <form id="form">
+        <label>Título del Evento:</label>
+
+        <input type="text" id="titulo" required />
+
+        <label>Fecha del Evento:</label>
+
+        <input type="date" id="fecha" required />
+
+        <label >Hora del Evento:</label>
+
+        <select id="hora" required></select>
+
+        <label>Descripción:</label>
+
+        <textarea id="descipcion" required></textarea>
+
+        <label>Nombres de los Participantes:</label>
+
+        <input type="text" id="participante" required />
+
+        <button onclick="agregarParticipanteTabla()">Agregar</button>
+
+        <table border="1" id="tablaDeParticipantes">
+            <tr>
+                <td>Participantes</td>
+                <td>Acciones</td>
+            </tr>
+        </table>
+
+        <button type="submit" onclick="guardar()">Guardar</button> 
+        <button onclick="eliminar()">Eliminar</button>
+        <button onclick="actualizar()">Actualizar</button>
+        <button onclick="listar()">Listar</button>
+
+      </form>
+    </div>
+
+    <script>
+
+      const timePicker = document.getElementById("hora");
+      const start = 0; // 00:00
+      const end = 24 * 60; // 24:00
+      const step = 30; // 30 minutes
+
+      for (let minutes = start; minutes < end; minutes += step) {
+        const hours24 = Math.floor(minutes / 60);
+        const hours12 = hours24 % 12 === 0 ? 12 : hours24 % 12;
+        const mins = (minutes % 60).toString().padStart(2, "0");
+        const period = hours24 < 12 ? "AM" : "PM";
+        const option = document.createElement("option");
+        option.value = `${hours24.toString().padStart(2, "0")}:${mins}`;
+        option.textContent = `${hours12}:${mins} ${period}`;
+        timePicker.appendChild(option);
+      }
+
+      function agregarParticipanteTabla() {
+        participante = document.getElementById("participante")
+            tablaDeParticipantes = document.getElementById("tablaDeParticipantes")
+            nuevaFila = tablaDeParticipantes.insertRow()
+            nuevaCelda = nuevaFila.insertCell()
+            nuevaCelda.innerHTML = participante.value
+
+            botonEliminar = document.createElement("button")
+            botonEliminar.innerHTML = "Eliminar"
+
+            botonEliminar.addEventListener("click", function () {
+                filaAEliminar = this.closest("tr")
+                filaAEliminar.remove()
+            })
+
+            nuevaCelda2 = nuevaFila.insertCell()
+            nuevaCelda2.appendChild(botonEliminar)
+
+            participante.value = ""
+            participante.focus()
+      }
+    </script>
+    
+    <script src="../js/calendario.js"></script>
+   
+
+  </body>
+</html>
